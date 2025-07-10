@@ -2,8 +2,6 @@
 
 MeshSim is a backend system built with **FastAPI**, designed for secure uploading and lightweight processing of geometry files (e.g., `.msh`, `.geo`). It includes token-based authentication, Dockerized deployment, and structured API endpoints — laying the foundation for future AI-powered meshing workflows.
 
----
-
 ## 🚀 Features
 
 - ✅ Token-based user authentication via `/login`
@@ -14,8 +12,6 @@ MeshSim is a backend system built with **FastAPI**, designed for secure uploadin
 - ✅ Health check endpoint at `/health`
 - 🐳 Fully containerized using Docker
 
----
-
 ## 📦 Tech Stack
 
 - **Backend**: FastAPI, Pydantic
@@ -25,27 +21,21 @@ MeshSim is a backend system built with **FastAPI**, designed for secure uploadin
 - **Containerization**: Docker
 - **Optional**: PostgreSQL, Celery (planned features)
 
----
-
 ## 📂 Project Structure
 
+```
 meshsim/
 │
 ├── app/
-│ ├── main.py # FastAPI app and endpoints
-│ ├── auth.py # Auth logic (login, token)
-│ ├── mesh_utils.py # Placeholder mesh generator
+│   ├── main.py         # FastAPI app and endpoints
+│   ├── auth.py         # Auth logic (login, token)
+│   ├── mesh_utils.py   # Placeholder mesh generator
 │
-├── uploads/ # Saved uploaded geometry files
+├── uploads/            # Saved uploaded geometry files
 ├── requirements.txt
 ├── Dockerfile
 └── README.md
-
-yaml
-Copy
-Edit
-
----
+```
 
 ## 🔐 Authentication Flow
 
@@ -55,80 +45,68 @@ Edit
      "username": "sandeep",
      "password": "password123"
    }
-Receive:
+   ```
+   Receive:
+   ```json
+   {
+     "access_token": "xxx.yyy.zzz",
+     "token_type": "bearer"
+   }
+   ```
+2. Use token in `/docs` or headers:
+   ```
+   Authorization: Bearer <access_token>
+   ```
 
-json
-Copy
-Edit
-{
-  "access_token": "xxx.yyy.zzz",
-  "token_type": "bearer"
-}
-Use token in /docs or headers:
+## 📤 Upload Geometry
 
-makefile
-Copy
-Edit
-Authorization: Bearer <access_token>
-📤 Upload Geometry
-Endpoint: POST /upload-geometry
+**Endpoint**: `POST /upload-geometry`
 
-Headers: Bearer token required
+- **Headers**: Bearer token required
+- **Payload**: File upload (e.g., `.geo`, `.txt`)
+- **Response**:
+  ```json
+  {
+    "user": "sandeep",
+    "filename": "example.geo",
+    "saved_path": "uploads/example.geo",
+    "mesh": { ... }
+  }
+  ```
 
-Payload: File upload (e.g., .geo, .txt)
+## ✅ Health Check
 
-Response:
+Visit: `GET http://localhost:8000/health`
 
-json
-Copy
-Edit
-{
-  "user": "sandeep",
-  "filename": "example.geo",
-  "saved_path": "uploads/example.geo",
-  "mesh": { ... }
-}
-✅ Health Check
-Visit:
-
-bash
-Copy
-Edit
-GET http://localhost:8000/health
-Response:
-
-json
-Copy
-Edit
+**Response**:
+```json
 {"status": "ok"}
-🐳 Docker Deployment
-🛠️ Build the container
-bash
-Copy
-Edit
+```
+
+## 🐳 Docker Deployment
+
+### 🛠️ Build the container
+```bash
 docker build -t meshsim-app .
-▶️ Run it
-bash
-Copy
-Edit
+```
+
+### ▶️ Run it
+```bash
 docker run -d -p 8000:8000 --name meshsim meshsim-app
-🌐 Open
-Navigate to:
-http://localhost:8000/docs
+```
 
-🔮 Future Ideas
-AI-powered mesh quality scoring
+### 🌐 Open
+Navigate to: [http://localhost:8000/docs](http://localhost:8000/docs)
 
-PostgreSQL storage for uploaded jobs
+## 🔮 Future Ideas
 
-CI/CD with GitHub Actions
+- AI-powered mesh quality scoring
+- PostgreSQL storage for uploaded jobs
+- CI/CD with GitHub Actions
+- FastAPI BackgroundTasks or Celery queue
 
-FastAPI BackgroundTasks or Celery queue
+## 📜 License
 
-📜 License
 MIT License © 2025 Sai Sandeep Mamidala
-Feel free to fork, clone, and build on it!
 
-yaml
-Copy
-Edit
+Feel free to fork, clone, and build on it!
